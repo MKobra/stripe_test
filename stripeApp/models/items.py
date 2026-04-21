@@ -9,6 +9,6 @@ class Item(models.Model):
     def __str__(self):
         return f"{self.name} - {self.price}"
 
-class Meta:
-    verbose_name = "Item"
-    verbose_name_plural = "Items"
+    class Meta:
+        verbose_name = "Item"
+        verbose_name_plural = "Items"

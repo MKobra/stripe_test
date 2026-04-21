@@ -7,3 +7,6 @@ DB_PORT=5432
 
 SECRET_KEY=supersecretkey
 DEBUG=True
+STRIPE_PUBLIC_KEY=pk_test_sasas
+STRIPE_SECRET_KEY=sk_test_sasas
+STRIPE_WEBHOOK_SECRET=sk_test_sasas
