@@ -9,6 +9,13 @@ from django.views.decorators.csrf import csrf_exempt
 import stripe
 
 
+def item_detail(request, id):
+    item = Item.objects.get(id=id)
+    return render(request, 'item_detail.html', {
+        'item': item,
+        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
+    })
+
 def shop_page(request):
     items = Item.objects.all()
 
@@ -41,7 +48,7 @@ class CreateOrderView(APIView):
                 total_price += product.price * item.get('quantity')
             stripe.api_key = settings.STRIPE_SECRET_KEY
             intent = stripe.PaymentIntent.create(
-                amount=int(total_price),
+                amount=int(total_price * 100),
                 currency='usd',
                 metadata={'order_id': order.id}
             )
@@ -58,6 +65,8 @@ class CreateOrderView(APIView):
 @csrf_exempt
 def stripe_webhook_view(request):
     payload = request.body
+    print("📦 RAW PAYLOAD:")
+    print(payload.decode('utf-8'))
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
     try:
         event = stripe.Webhook.construct_event(

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import path
-from stripeApp.views import shop_page, CreateOrderView, stripe_webhook_view
+from stripeApp.views import shop_page, CreateOrderView, stripe_webhook_view, item_detail
 from django.contrib import admin
 
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/create-order/', CreateOrderView.as_view(), name='api_create_order'),
     path('api/webhook/', stripe_webhook_view, name='stripe_webhook'),
     path('success/', lambda request: render(request, 'success.html'), name='success'),
+    path('item/<int:id>/', item_detail, name='item_detail'),
 ]

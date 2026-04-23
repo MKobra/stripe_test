@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="container bg-body-tertiary">
+
+<nav class="navbar mb-3" style="background-color: #3b4a8c">
+  <div class="container-fluid">
+    <a class="navbar-brand fs-3 text-light fw-bold" href="/shop/">Home</a>
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

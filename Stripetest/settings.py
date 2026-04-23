@@ -27,9 +27,10 @@ SECRET_KEY = 'django-insecure-wod1$ddh7e&s&53za(l13&(qhjcwx_9t&&j^m@&a3i1-d#@28i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app', '.onrender.com']
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.ngrok-free.app"
+    "https://*.ngrok-free.app",
+    'https://*.onrender.com',
 ]
 
 # Application definition
