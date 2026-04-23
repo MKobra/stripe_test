@@ -14,12 +14,13 @@
 
 <div class="row">
     {% for item in items %}
-    <div class="card m-3 p-2" style="width: 18rem;">
+    <div class="card m-3 p-2 d-flex justify-content-between" style="width: 18rem;">
         <a href="/item/{{ item.id }}/" class="text-decoration-none">
           <div class="card-body">
             <h5 class="card-title text-dark fw-bold">{{ item.name }}</h5>
               <hr>
-            <p class="card-text">{{ item.description }}</p>
+            <p class="card-text" style="font-size: small">{{ item.description }}</p>
+              <hr>
               <h6 class="card-subtitle mb-2 text-body-secondary fw-bold fs-4">
                 {{ item.price }} {{ item.currency }}
             </h6>
