@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'stripeApp',
     'rest_framework'
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,19 +78,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Stripetest.wsgi.application'
 
+import dj_database_url
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+database_url = os.environ.get('DATABASE_URL')
+
+if not database_url:
+
+    user = os.environ.get('POSTGRES_USER', 'django_user')
+    password = os.environ.get('POSTGRES_PASSWORD', 'django_pass')
+    host = os.environ.get('DB_HOST', 'db')
+    port = os.environ.get('DB_PORT', '5432')
+    db_name = os.environ.get('POSTGRES_DB', 'django_db')
+
+    database_url = f"postgres://{user}:{password}@{host}:{port}/{db_name}"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-    }
+    'default': dj_database_url.config(
+        default=database_url,
+        conn_max_age=600
+    )
 }
 
 
@@ -127,6 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
