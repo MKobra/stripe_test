@@ -5,6 +5,7 @@ class Item(models.Model):
     description = models.TextField(verbose_name='Description', blank=True, null=True)
     price = models.FloatField(max_length=100, blank=False, null=False, verbose_name="Price")
     created_at = models.DateTimeField(auto_now_add=True)
+    currency = models.CharField(max_length=10, blank=False, null=False, default="usd", verbose_name="Currency")
 
     def __str__(self):
         return f"{self.name} - {self.price}"

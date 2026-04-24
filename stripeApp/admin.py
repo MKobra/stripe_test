@@ -17,3 +17,4 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
     list_display = ("id", "created_at", "total_price")
+

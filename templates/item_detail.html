@@ -8,9 +8,9 @@
     <div class="card p-4">
         <h1>{{ item.name }}</h1>
         <p class="text-muted">{{ item.description }}</p>
-        <h3 class="text-primary">Цена: {{ item.price }} </h3>
+        <h3 class="text-primary">Цена: {{ item.price }} {{ item.currency }} </h3>
 
-        <button id="buy-button" class="btn btn-primary mt-3" onclick="buyNow({{ item.id }})">
+        <button onclick="buyNow({{ item.id }}, '{{ item.currency }}')" class="btn btn-primary">
             Купить сейчас
         </button>
 
@@ -24,7 +24,8 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     window.STRIPE_PUBLIC_KEY = "{{ STRIPE_PUBLIC_KEY }}";
+    const currency = "{{ item.currency|lower }}";
 </script>
 
-<script src="{% static 'shop.js' %}"></script>
+<script src="{% static 'single_pay.js' %}"></script>
 {% endblock %}

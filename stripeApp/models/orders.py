@@ -27,4 +27,4 @@ class OrderItem(models.Model):
         return float(self.item.price) * self.quantity
 
     def __str__(self):
-        return f"{self.item.name} x {self.quantity}"
+        return f"{self.item.name} x {self.quantity} {self.currency}"

@@ -1,5 +1,5 @@
 from Stripetest import settings
-from .models import Item, Order, OrderItem
+from stripeApp.models import Item, Order, OrderItem
 from django.shortcuts import render
 from django.conf import settings
 from rest_framework.views import APIView
@@ -31,6 +31,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class CreateOrderView(APIView):
     def post(self, request):
         cart_data = request.data.get('cart', [])
+        selected_currency = request.data.get('selected_currency', 'usd').lower()
         if not cart_data:
             return Response({'error': 'Корзина пуста'}, status=400)
         try:
@@ -49,7 +50,7 @@ class CreateOrderView(APIView):
             stripe.api_key = settings.STRIPE_SECRET_KEY
             intent = stripe.PaymentIntent.create(
                 amount=int(total_price * 100),
-                currency='usd',
+                currency=selected_currency,
                 metadata={'order_id': order.id}
             )
             order.intent_id = intent.id
@@ -65,7 +66,6 @@ class CreateOrderView(APIView):
 @csrf_exempt
 def stripe_webhook_view(request):
     payload = request.body
-    print("📦 RAW PAYLOAD:")
     print(payload.decode('utf-8'))
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
     try:
@@ -79,12 +79,13 @@ def stripe_webhook_view(request):
 
     if event['type'] == 'payment_intent.succeeded':
         intent = event['data']['object']
-
         order_id = intent.metadata['order_id']
-
+        stripe_currency = intent.get('currency')
         if order_id:
             order = Order.objects.get(id=order_id)
             order.status = 'Paid'
+            if stripe_currency:
+                order.currency = stripe_currency.lower()
             order.save()
 
     return HttpResponse(status=200)
