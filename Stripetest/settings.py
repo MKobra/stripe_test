@@ -25,7 +25,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = 'django-insecure-wod1$ddh7e&s&53za(l13&(qhjcwx_9t&&j^m@&a3i1-d#@28i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app', '.onrender.com']
 CSRF_TRUSTED_ORIGINS = [
