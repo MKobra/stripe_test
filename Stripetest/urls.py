@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.urls import path
-from stripeApp.views.intent_views import shop_page, CreateOrderView, stripe_webhook_view, item_detail
+from stripeApp.views.intent_views import shop_page, CreateOrderView, item_detail
 from stripeApp.views.session_views import buy_by_id
 from django.contrib import admin
+
+from stripeApp.webhook import stripe_webhook_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
