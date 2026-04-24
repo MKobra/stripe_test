@@ -21,6 +21,8 @@ class Order(models.Model):
     intent_id = models.CharField(max_length=255, blank=True, null=True, default=None)
     tax = models.ForeignKey(Tax, on_delete=models.SET_NULL, null=True, blank=True)
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
+    receipt = models.TextField(blank=True, null=True)
+    session_id = models.CharField(max_length=255, blank=True, null=True)
 
     def total_price(self):
         return sum(i.total_price() for i in self.order_items.all())

@@ -16,7 +16,7 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
-    list_display = ("id", "created_at", "total_price")
+    list_display = ("id", "created_at", "total_price", "receipt")
 
 @admin.register(Tax)
 class TaxAdmin(admin.ModelAdmin):

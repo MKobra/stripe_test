@@ -30,7 +30,7 @@ async function buyNow(itemId, currency) {
         const result = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: window.location.origin + "/success/"
+                return_url: window.location.origin + `/success/${data.order_id}/`
             }
         });
 

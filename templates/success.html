@@ -3,5 +3,33 @@
 {% block title %}Магазин{% endblock %}
 
 {% block content %}
-<p class="text-success fw-bold text-light text-center fs-4 bg-success p-3 rounded-3">Оплата прошла успешно</p>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+
+        {% if order.intent_id %}
+            {% if order.receipt %}
+                <h4 class="mb-3">Ваш чек готов:</h4>
+                <a href="{{ order.receipt }}" target="_blank" class="btn btn-success btn-lg shadow-sm">
+                    Открыть чек Stripe
+                </a>
+            {% else %}
+                <div class="alert alert-info py-4 shadow-sm">
+                    <h5 class="alert-heading">Чек генерируется...</h5>
+                    <button onclick="window.location.reload();" class="btn btn-outline-primary mt-3">
+                        Обновить страницу
+                    </button>
+                </div>
+            {% endif %}
+
+        {% else %}
+            <div class="alert alert-success py-4 shadow-sm">
+                <h4 class="alert-heading mb-0">Оплата прошла успешно!</h4>
+                <p class="mt-2 mb-0 text-muted">Спасибо за ваш заказ.</p>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
 {% endblock %}

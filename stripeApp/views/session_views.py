@@ -41,11 +41,11 @@ def buy_by_id(request, id):
         discounts=discounts,
         mode='payment',
         metadata={'order_id': order.id},
-        success_url=request.build_absolute_uri('/success/'),
+        success_url=request.build_absolute_uri(f'/success/{order.id}/'),
         cancel_url=request.build_absolute_uri('/')
     )
 
-    order.intent_id = session.id
+    order.session_id = session.id
     order.save()
 
     return redirect(session.url, status=303)

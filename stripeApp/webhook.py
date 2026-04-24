@@ -43,5 +43,21 @@ def stripe_webhook_view(request):
             except Order.DoesNotExist:
                 return HttpResponse(status=404)
 
+    if event['type'] in ['charge.succeeded', 'charge.updated']:
+        charge = event['data']['object'].to_dict()
+        print(charge)
+        metadata = charge.get('metadata', {})
+        order_id = metadata.get('order_id')
+        receipt_url = charge.get('receipt_url')
+
+        if order_id and receipt_url:
+            try:
+                order = Order.objects.get(id=order_id)
+
+                if order.receipt != receipt_url:
+                    order.receipt = receipt_url
+                    order.save()
+            except Order.DoesNotExist:
+                return HttpResponse(status=404)
 
     return HttpResponse(status=200)

@@ -1,6 +1,6 @@
 from Stripetest import settings
 from stripeApp.models import Item, Order, OrderItem
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,6 +14,7 @@ def item_detail(request, id):
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
     })
 
+
 def shop_page(request):
     items = Item.objects.all()
 
@@ -22,6 +23,16 @@ def shop_page(request):
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
     }
     return render(request, 'shop.html', context)
+
+
+def success_page(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    context = {
+        'order': order,
+        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
+    }
+    return render(request, 'success.html', context)
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -78,9 +89,13 @@ class CreateOrderView(APIView):
             order.intent_id = intent.id
             order.save()
 
-            return Response({'client_secret': intent.client_secret})
+            return Response({
+                'client_secret': intent.client_secret,
+                'order_id': order.id
+            })
 
         except Item.DoesNotExist:
             return Response({'error': 'товар не найден в базе'}, status=400)
         except Exception as e:
             return Response({'error': str(e)}, status=400)
+
